@@ -30,7 +30,7 @@ const Nav = () => {
         <Link href='/'>
           <a>Home</a>
         </Link>
-        <Link href='/details'>
+        <Link href='/faqs'>
           <a>Faq</a>
         </Link>
       </div>
