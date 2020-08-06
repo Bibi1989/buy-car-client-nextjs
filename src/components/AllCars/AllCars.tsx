@@ -36,7 +36,7 @@ const AllCars = ({
   };
 
   const handleNav = (id) => {
-    push(`/car/${id}`);
+    push(`/vehicle/${name}/${model}/${id}`);
   };
   return (
     <Container>

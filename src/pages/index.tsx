@@ -69,14 +69,14 @@ function IndexPage({
   console.log(typeof Number(query.page));
 
   const prev = () => {
-    let num = Number(query.page) - 1;
+    let num = Number(query.page) ? Number(query.page) - 1 : 0;
     if (num <= 0) {
       num = count;
     }
     push(`/?page=${num}`);
   };
   const next = () => {
-    let num = Number(query.page) + 1;
+    let num = Number(query.page) ? Number(query.page) + 1 : 2;
     if (num > count) {
       num = 1;
     }
@@ -108,6 +108,7 @@ function IndexPage({
                 .fill(null)
                 .map((v, i: number) => (
                   <li
+                    key={i}
                     className={Number(query.page) === i + 1 && "active"}
                     onClick={() => push(`/?page=${i + 1}`)}
                   >
@@ -132,8 +133,7 @@ export async function getServerSideProps(ctx) {
   let max = ctx.query.max ? ctx.query.max : null;
 
   let page = Number(ctx.query.page) || 1;
-  let limit = Number(ctx.query.limit) || 3;
-  let offset = (page - 1) * limit;
+  let limit = Number(ctx.query.limit) || 4;
 
   const count_url = `http://localhost:5000/api/v1/count`;
   const url = `http://localhost:5000/api/v1/cars?page=${page}&limit=${limit}`;
