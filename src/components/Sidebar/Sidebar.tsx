@@ -23,7 +23,7 @@ const locations = [
 ];
 
 const Sidebar = ({ setSelect, select, makes, models }) => {
-  const [mod, setMod] = useState([]);
+  const [mod, setMod] = useState(null);
   const { query, push }: { query: any; push: any } = useRouter();
   const prices = [
     500000,
@@ -67,11 +67,11 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
           onClick={() => {
             push("/");
             setSelect({
-              make: "bmw",
+              make: "",
               model: "",
               location: "",
-              min_price: 0,
-              max_price: 0,
+              min: 0,
+              max: 0,
             });
           }}
         >
@@ -125,7 +125,7 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
           onChange={({ target: { value } }) =>
             setSelect({
               ...select,
-              min_price: value,
+              min: value,
             })
           }
         >
@@ -144,7 +144,7 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
           onChange={({ target: { value } }) =>
             setSelect({
               ...select,
-              max_price: value,
+              max: value,
             })
           }
         >
@@ -166,7 +166,10 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
 
 export default Sidebar;
 
-const Container = styled.div``;
+const Container = styled.div`
+/* position: sticky;
+top: 0; */
+`;
 const List = styled.div`
   margin-bottom: 1em;
 
