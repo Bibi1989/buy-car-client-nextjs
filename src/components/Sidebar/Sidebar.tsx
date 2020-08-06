@@ -22,7 +22,7 @@ const locations = [
   { value: "port harcourt", label: "Port Harcourt" },
 ];
 
-const Sidebar = ({ setSelect, select, makes, models }) => {
+const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
   const [mod, setMod] = useState(null);
   const { query, push }: { query: any; push: any } = useRouter();
   const prices = [
@@ -160,6 +160,8 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
       <Button background='teal' onClick={handleSearch}>
         Search For Car
       </Button>
+
+      <p className='count'>{queryCars.length} Cars Found!!!</p>
     </Container>
   );
 };
@@ -167,7 +169,7 @@ const Sidebar = ({ setSelect, select, makes, models }) => {
 export default Sidebar;
 
 const Container = styled.div`
-/* position: sticky;
+  /* position: sticky;
 top: 0; */
 `;
 const List = styled.div`

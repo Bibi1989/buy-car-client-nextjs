@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import AllCars from "../components/AllCars/AllCars";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { useState } from "react";
@@ -33,6 +34,7 @@ function IndexPage({
   makeFilters,
   makeModel,
   prices,
+  count,
 }: {
   cars?: CarInterface[];
   makes?: any[];
@@ -40,6 +42,7 @@ function IndexPage({
   models?: any[];
   makeFilters?: any[];
   makeModel?: any[];
+  count: number;
 }) {
   const [select, setSelect] = useState<SelectProps>({
     make: "",
@@ -60,9 +63,25 @@ function IndexPage({
       ? prices
       : cars;
 
+  const { push, query }: any = useRouter();
   // console.log({ cars, makes, models, makeFilters, makeModel, prices });
 
-  // console.log(cars);
+  console.log(typeof Number(query.page));
+
+  const prev = () => {
+    let num = Number(query.page) - 1;
+    if (num <= 0) {
+      num = count;
+    }
+    push(`/?page=${num}`);
+  };
+  const next = () => {
+    let num = Number(query.page) + 1;
+    if (num > count) {
+      num = 1;
+    }
+    push(`/?page=${num}`);
+  };
 
   return (
     <div>
@@ -74,13 +93,31 @@ function IndexPage({
               select={select}
               makes={makes}
               models={models}
+              queryCars={queryCars}
             />
           </div>
           <div>
-            <p className='count'>{queryCars.length} Cars Found!!!</p>
             {queryCars.map((car: CarInterface) => (
               <AllCars key={car._id} car={car} />
             ))}
+            <ul className='paginate'>
+              <li className='arrow_left' onClick={prev}>
+                <span>&#8592;</span>
+              </li>
+              {Array(count)
+                .fill(null)
+                .map((v, i: number) => (
+                  <li
+                    className={Number(query.page) === i + 1 && "active"}
+                    onClick={() => push(`/?page=${i + 1}`)}
+                  >
+                    {i + 1}
+                  </li>
+                ))}
+              <li className='arrow_right' onClick={next}>
+                <span>&#8594;</span>
+              </li>
+            </ul>
           </div>
         </Grid>
       </Container>
@@ -93,19 +130,34 @@ export async function getServerSideProps(ctx) {
   let mod = ctx.query.model ? ctx.query.model : null;
   let min = ctx.query.min ? ctx.query.min : null;
   let max = ctx.query.max ? ctx.query.max : null;
-  const url = "http://localhost:5000/api/v1/cars";
+
+  let page = Number(ctx.query.page) || 1;
+  let limit = Number(ctx.query.limit) || 3;
+  let offset = (page - 1) * limit;
+
+  const count_url = `http://localhost:5000/api/v1/count`;
+  const url = `http://localhost:5000/api/v1/cars?page=${page}&limit=${limit}`;
   const make_url = `http://localhost:5000/api/v1/makes`;
   const price_url = `http://localhost:5000/api/v1/prices?min=${min}&max=${max}`;
   const base_on_make_url = `http://localhost:5000/api/v1/cars/make/${make}`;
   const model_url = `http://localhost:5000/api/v1/models/${make}`;
   const make_model_url = `http://localhost:5000/api/v1/cars/model/make?make=${make}&model=${mod}`;
-  const [res, filter, model, base_make, makmod, price] = await Promise.all([
+  const [
+    res,
+    filter,
+    model,
+    base_make,
+    makmod,
+    price,
+    length,
+  ] = await Promise.all([
     fetch(url),
     fetch(make_url),
     fetch(model_url),
     fetch(base_on_make_url),
     fetch(make_model_url),
     fetch(price_url),
+    fetch(count_url),
   ]);
   const cars = await res.json();
   const makes = await filter.json();
@@ -113,6 +165,7 @@ export async function getServerSideProps(ctx) {
   const models = await model.json();
   const baseMake = await base_make.json();
   const makeModel = await makmod.json();
+  let count = await length.json();
 
   return {
     props: {
@@ -122,6 +175,7 @@ export async function getServerSideProps(ctx) {
       makeFilters: baseMake.data,
       makeModel: makeModel.data,
       prices: prices.data,
+      count: Math.ceil(count.data / limit),
     },
   };
 }
@@ -138,6 +192,43 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 20% 80%;
   gap: 2em;
+
+  .paginate {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em 0;
+
+    li {
+      /* padding: 0 1em; */
+      width: 20px;
+      height: 20px;
+      background: #ddd;
+      margin-right: 1em;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.5s ease-in-out;
+
+      &.active {
+        background: teal;
+        color: white;
+        width: 25px;
+        height: 25px;
+      }
+    }
+
+    .arrow_right,
+    .arrow_left {
+      width: 30px;
+      height: 30px;
+      background: teal;
+      color: white;
+    }
+  }
 
   .sidebar {
     position: -webkit-sticky;
