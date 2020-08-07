@@ -22,8 +22,8 @@ const locations = [
   { value: "port harcourt", label: "Port Harcourt" },
 ];
 
-const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
-  const [mod, setMod] = useState(null);
+const Sidebar = ({ setSelect, select, makes, models, total, nTotal }) => {
+  const [mod, setMod] = useState<any>(null);
   const { query, push }: { query: any; push: any } = useRouter();
   const prices = [
     500000,
@@ -45,12 +45,15 @@ const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
         `http://localhost:5000/api/v1/models/${select.make}`
       );
       let mods = await res.json();
-      setMod(mods.data);
+      // let k: any = new Set(mods.data ? mods.data.map((m) => m) : []);
+      // let n = [...k];
+      setMod(mods);
     };
     getModels();
   }, [select]);
 
   let newModels = mod ? mod : models;
+  // console.log(models);
 
   const handleSearch = () => {
     push({
@@ -75,7 +78,7 @@ const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
             });
           }}
         >
-          All
+          All Cars ({total})
         </Button>
       </List>
       <List>
@@ -111,11 +114,12 @@ const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
           <option value={query.model}>
             {query.model || " Select a model"}
           </option>
-          {newModels.map((model: any) => (
-            <option key={model.model} value={model.model}>
-              {model.model}
-            </option>
-          ))}
+          {newModels.data &&
+            newModels.data.map((model: any) => (
+              <option key={model.model} value={model.model}>
+                {model.model} ({model.count})
+              </option>
+            ))}
         </Select>
       </List>
       <List>
@@ -161,7 +165,7 @@ const Sidebar = ({ setSelect, select, makes, models, queryCars }) => {
         Search For Car
       </Button>
 
-      <p className='count'>{queryCars.length} Cars Found!!!</p>
+      <p className='count'>{nTotal} Cars Found!!!</p>
     </Container>
   );
 };

@@ -13,7 +13,7 @@ const Appstyle = styled.div`
 export default function MyApp({ Component, pageProps }) {
   return (
     <Appstyle>
-      <Nav />
+      <Nav {...pageProps} />
       <Component {...pageProps} />
     </Appstyle>
   );

@@ -23,7 +23,7 @@ const NavStyle = styled.div`
 const Nav = () => {
   return (
     <NavStyle>
-      <Link href='/'>
+      <Link href='/' as='/'>
         <a>Car Trader</a>
       </Link>
       <div>

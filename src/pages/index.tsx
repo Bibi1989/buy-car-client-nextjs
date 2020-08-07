@@ -35,6 +35,7 @@ function IndexPage({
   makeModel,
   prices,
   count,
+  total,
 }: {
   cars?: CarInterface[];
   makes?: any[];
@@ -43,6 +44,7 @@ function IndexPage({
   makeFilters?: any[];
   makeModel?: any[];
   count: number;
+  total: number;
 }) {
   const [select, setSelect] = useState<SelectProps>({
     make: "",
@@ -51,8 +53,6 @@ function IndexPage({
     min: 0,
     max: 0,
   });
-
-  console.log({ prices });
 
   let queryCars =
     makeModel.length > 0
@@ -64,9 +64,8 @@ function IndexPage({
       : cars;
 
   const { push, query }: any = useRouter();
-  // console.log({ cars, makes, models, makeFilters, makeModel, prices });
 
-  console.log(typeof Number(query.page));
+  let a: any = new Set(models.map((m) => m));
 
   const prev = () => {
     let num = Number(query.page) ? Number(query.page) - 1 : 0;
@@ -83,6 +82,15 @@ function IndexPage({
     push(`/?page=${num}`);
   };
 
+  let nTotal =
+    makeModel.length > 0
+      ? makeModel.length
+      : makeFilters.length > 0
+      ? makeFilters.length
+      : prices.length > 0
+      ? prices.length
+      : total;
+
   return (
     <div>
       <Container>
@@ -93,7 +101,8 @@ function IndexPage({
               select={select}
               makes={makes}
               models={models}
-              queryCars={queryCars}
+              nTotal={nTotal}
+              total={total}
             />
           </div>
           <div>
@@ -109,7 +118,9 @@ function IndexPage({
                 .map((v, i: number) => (
                   <li
                     key={i}
-                    className={Number(query.page) === i + 1 && "active"}
+                    className={
+                      Number(query.page) === i + 1 ? "active" : undefined
+                    }
                     onClick={() => push(`/?page=${i + 1}`)}
                   >
                     {i + 1}
@@ -176,6 +187,7 @@ export async function getServerSideProps(ctx) {
       makeModel: makeModel.data,
       prices: prices.data,
       count: Math.ceil(count.data / limit),
+      total: count.data,
     },
   };
 }
