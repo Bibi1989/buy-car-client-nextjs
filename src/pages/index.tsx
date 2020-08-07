@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import AllCars from "../components/AllCars/AllCars";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { useState } from "react";
+import { Row, Col, Divider, Empty, Affix } from "antd";
 
 interface CarInterface {
   _id: string;
@@ -36,12 +37,14 @@ function IndexPage({
   prices,
   count,
   total,
+  all,
 }: {
   cars?: CarInterface[];
   makes?: any[];
   prices?: any[];
   models?: any[];
   makeFilters?: any[];
+  all?: any[];
   makeModel?: any[];
   count: number;
   total: number;
@@ -54,16 +57,24 @@ function IndexPage({
     max: 0,
   });
 
-  let queryCars =
-    makeModel.length > 0
-      ? makeModel
-      : makeFilters.length > 0
-      ? makeFilters
-      : prices.length > 0
-      ? prices
-      : cars;
-
   const { push, query }: any = useRouter();
+
+  console.log(query);
+
+  const allCars = () => {
+    let queryCars =
+      all.length > 0
+        ? all
+        : makeModel.length > 0
+        ? makeModel
+        : makeFilters.length > 0
+        ? makeFilters
+        : prices.length > 0
+        ? prices
+        : cars;
+
+    return queryCars;
+  };
 
   let a: any = new Set(models.map((m) => m));
 
@@ -92,24 +103,37 @@ function IndexPage({
       : total;
 
   return (
-    <div>
-      <Container>
-        <Grid>
-          <div className='sidebar'>
-            <Sidebar
-              setSelect={setSelect}
-              select={select}
-              makes={makes}
-              models={models}
-              nTotal={nTotal}
-              total={total}
-            />
-          </div>
-          <div>
-            {queryCars.map((car: CarInterface) => (
-              <AllCars key={car._id} car={car} />
-            ))}
-            <ul className='paginate'>
+    <Row style={{ width: "100%", paddingLeft: "1em" }}>
+      <Col
+        className='gutter-row'
+        xxl={6}
+        xl={6}
+        lg={10}
+        md={10}
+        sm={24}
+        xs={24}
+      >
+        <Affix offsetTop={10}>
+          <Divider orientation='center'>Filter Cars</Divider>
+          <Sidebar
+            setSelect={setSelect}
+            select={select}
+            makes={makes}
+            models={models}
+            nTotal={nTotal}
+            total={total}
+          />
+        </Affix>
+      </Col>
+      <Col offset={1} xxl={17} xl={17} lg={13} md={13} sm={24} xs={24}>
+        <Divider orientation='left'>Cars</Divider>
+        <div>
+          {allCars().length <= 0 && <Empty />}
+          {allCars().map((car: CarInterface) => (
+            <AllCars key={car._id} car={car} />
+          ))}
+          {allCars().length > 0 && (
+            <Ul className='paginate'>
               <li className='arrow_left' onClick={prev}>
                 <span>&#8592;</span>
               </li>
@@ -129,11 +153,11 @@ function IndexPage({
               <li className='arrow_right' onClick={next}>
                 <span>&#8594;</span>
               </li>
-            </ul>
-          </div>
-        </Grid>
-      </Container>
-    </div>
+            </Ul>
+          )}
+        </div>
+      </Col>
+    </Row>
   );
 }
 
@@ -150,6 +174,7 @@ export async function getServerSideProps(ctx) {
   const url = `http://localhost:5000/api/v1/cars?page=${page}&limit=${limit}`;
   const make_url = `http://localhost:5000/api/v1/makes`;
   const price_url = `http://localhost:5000/api/v1/prices?min=${min}&max=${max}`;
+  const all_url = `http://localhost:5000/api/v1/prices?min=${min}&max=${max}&make=${make}&model=${mod}`;
   const base_on_make_url = `http://localhost:5000/api/v1/cars/make/${make}`;
   const model_url = `http://localhost:5000/api/v1/models/${make}`;
   const make_model_url = `http://localhost:5000/api/v1/cars/model/make?make=${make}&model=${mod}`;
@@ -161,6 +186,7 @@ export async function getServerSideProps(ctx) {
     makmod,
     price,
     length,
+    all,
   ] = await Promise.all([
     fetch(url),
     fetch(make_url),
@@ -169,6 +195,7 @@ export async function getServerSideProps(ctx) {
     fetch(make_model_url),
     fetch(price_url),
     fetch(count_url),
+    fetch(all_url),
   ]);
   const cars = await res.json();
   const makes = await filter.json();
@@ -177,6 +204,7 @@ export async function getServerSideProps(ctx) {
   const baseMake = await base_make.json();
   const makeModel = await makmod.json();
   let count = await length.json();
+  let all_query = await all.json();
 
   return {
     props: {
@@ -188,6 +216,7 @@ export async function getServerSideProps(ctx) {
       prices: prices.data,
       count: Math.ceil(count.data / limit),
       total: count.data,
+      all: all_query.data,
     },
   };
 }
@@ -196,6 +225,43 @@ export default IndexPage;
 
 const Container = styled.div`
   padding: 0% 10px;
+`;
+
+const Ul = styled.ul`
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+
+  li {
+    /* padding: 0 1em; */
+    width: 20px;
+    height: 20px;
+    background: #ddd;
+    margin-right: 1em;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+
+    &.active {
+      background: teal;
+      color: white;
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  .arrow_right,
+  .arrow_left {
+    width: 30px;
+    height: 30px;
+    background: teal;
+    color: white;
+  }
 `;
 
 const Grid = styled.div`

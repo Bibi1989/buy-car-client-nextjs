@@ -5,9 +5,7 @@ import Link from "next/link";
 const Faq = ({ faq }) => {
   return (
     <Flex>
-      <Link href={`/vehicle/make/model/${faq._id}`}>
-        <FaqStyle>{faq.questions}</FaqStyle>
-      </Link>
+      <FaqStyle>{faq.questions}</FaqStyle>
     </Flex>
   );
 };

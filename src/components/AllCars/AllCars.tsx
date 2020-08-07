@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { formatPrice } from "../../utils/formatPrice";
+import { Row, Col } from "antd";
 
 const bmw = "./assets/bmw.jpg";
 const toyota = "./assets/toyota.jpg";
@@ -39,11 +40,13 @@ const AllCars = ({
     push(`/vehicle/${name}/${model}/${id}`);
   };
   return (
-    <Container>
-      <Grid>
+    <Row gutter={[16, 16]} style={{ width: "100%" }} align='middle'>
+      <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
         <Image onClick={() => handleNav(_id)}>
           <img src={photo_url || bmw} alt='cars poster' />
         </Image>
+      </Col>
+      <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
         <Content color={color.split(" ")[0]}>
           <h1 className='make'>
             <span>{name.toUpperCase()}</span>
@@ -55,8 +58,8 @@ const AllCars = ({
           <p className='location'>Location: {location}</p>
           <p className='description'>{`${description.slice(0, 50)}...`}</p>
         </Content>
-      </Grid>
-    </Container>
+      </Col>
+    </Row>
   );
 };
 
@@ -64,6 +67,7 @@ export default AllCars;
 
 const Container = styled.div`
   margin-bottom: 2em;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.09);
 `;
 const Grid = styled.div`
   display: grid;

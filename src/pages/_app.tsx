@@ -2,6 +2,7 @@ import "../Styles/globalStyle.css";
 import Nav from "../components/Nav";
 import styled from "styled-components";
 import "react-dropdown/style.css";
+import "antd/dist/antd.css";
 
 const Appstyle = styled.div`
   padding: 0;

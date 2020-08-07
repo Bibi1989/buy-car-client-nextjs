@@ -30,5 +30,5 @@ export const getServerSideProps = async (ctx) => {
 };
 
 const Container = styled.div`
-  padding: 2% 10%;
+  padding: 0 2%;
 `;

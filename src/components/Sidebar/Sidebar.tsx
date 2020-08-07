@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Dropdown from "react-dropdown";
+import { Button, Menu, Select } from "antd";
 import { useRouter } from "next/router";
+import { formatPrice } from "../../utils/formatPrice";
+import {
+  RadarChartOutlined,
+  QqOutlined,
+  DollarOutlined,
+  KeyOutlined,
+} from "@ant-design/icons";
 
-// const makes = [
-//   { value: "bmw", label: "Bmw" },
-//   { value: "toyota", label: "Toyota" },
-//   { value: "honda", label: "Honda" },
-//   { value: "lexus", label: "Lexus" },
-// ];
-// const models = [
-//   { value: "x5", label: "X5" },
-//   { value: "x6", label: "X6" },
-//   { value: "x7", label: "X7" },
-//   { value: "x8", label: "X8" },
-// ];
-const locations = [
-  { value: "lagos", label: "Lagos" },
-  { value: "abuja", label: "Abuja" },
-  { value: "bayelsa", label: "Bayelsa" },
-  { value: "port harcourt", label: "Port Harcourt" },
-];
+const { SubMenu } = Menu;
+const { Option }: any = Select;
 
 const Sidebar = ({ setSelect, select, makes, models, total, nTotal }) => {
   const [mod, setMod] = useState<any>(null);
@@ -61,107 +52,162 @@ const Sidebar = ({ setSelect, select, makes, models, total, nTotal }) => {
       query: select,
     });
   };
+  const handleClick = () => {
+    // push({
+    //   pathname: "/",
+    //   query: select,
+    // });
+  };
+
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
   return (
     <Container>
-      <List>
-        <label>All Cars</label>
-        <Button
-          background='white'
-          onClick={() => {
-            push("/");
-            setSelect({
-              make: "",
-              model: "",
-              location: "",
-              min: 0,
-              max: 0,
-            });
-          }}
-        >
-          All Cars ({total})
-        </Button>
-      </List>
-      <List>
-        <label>Makes</label>
-        <Select
-          name='make'
-          onChange={({ target: { value } }) =>
-            setSelect({
-              ...select,
-              make: value,
-            })
+      <Button
+        loading={false}
+        type='primary'
+        shape='round'
+        icon={<KeyOutlined />}
+        size='large'
+        style={{ width: "100%", marginTop: "2em" }}
+        onClick={() => push("/")}
+      >
+        All Cars ({total})
+      </Button>
+      <Menu style={{ width: "100%" }} mode='inline'>
+        <SubMenu
+          key='sub1'
+          title={
+            <span>
+              <QqOutlined />
+              <span>Car Makes</span>
+            </span>
           }
         >
-          <option value={query.make}>{query.make || " Select a make"}</option>
-          {makes.map((make: any) => (
-            <option key={make.make} value={make.make}>
-              {make.make} ({make.count})
-            </option>
-          ))}
-        </Select>
-      </List>
-      <List>
-        <label>Models</label>
-        <Select
-          name='model'
-          onChange={({ target: { value } }) =>
-            setSelect({
-              ...select,
-              model: value,
-            })
+          <div style={{ padding: "1em", paddingLeft: "2em" }}>
+            <Select
+              onChange={(value) =>
+                setSelect({
+                  ...select,
+                  make: value,
+                })
+              }
+              defaultValue='Car Makes'
+              style={{ width: "100%" }}
+              // onChange={handleChange}
+            >
+              <Option value={query.make}>
+                {query.make || " Select a make"}
+              </Option>
+              {makes.map((make: any) => (
+                <Option key={make.make} value={make.make}>
+                  {make.make} ({make.count})
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </SubMenu>
+        <SubMenu
+          key='sub2'
+          title={
+            <span>
+              <RadarChartOutlined />
+              <span>Car Models</span>
+            </span>
           }
         >
-          <option value={query.model}>
-            {query.model || " Select a model"}
-          </option>
-          {newModels.data &&
-            newModels.data.map((model: any) => (
-              <option key={model.model} value={model.model}>
-                {model.model} ({model.count})
-              </option>
-            ))}
-        </Select>
-      </List>
-      <List>
-        <label>Minimum Price</label>
-        <Select
-          name='min'
-          onChange={({ target: { value } }) =>
-            setSelect({
-              ...select,
-              min: value,
-            })
+          <div style={{ padding: "1em", paddingLeft: "2em" }}>
+            <Select
+              onChange={(value) =>
+                setSelect({
+                  ...select,
+                  model: value,
+                })
+              }
+              defaultValue='Car Model'
+              style={{ width: "100%" }}
+            >
+              <Option value={query.model}>
+                {query.model || " Select a model"}
+              </Option>
+              {newModels.data &&
+                newModels.data.map((model: any) => (
+                  <Option key={model.model} value={model.model}>
+                    {model.model} ({model.count})
+                  </Option>
+                ))}
+            </Select>
+          </div>
+        </SubMenu>
+        <SubMenu
+          key='sub3'
+          title={
+            <span>
+              <DollarOutlined />
+              <span>Minimum Price</span>
+            </span>
           }
         >
-          <option value={query.min}>{query.min || "Minimum Prices"}</option>
-          {prices.map((price: number) => (
-            <option key={price} value={price}>
-              {price}
-            </option>
-          ))}
-        </Select>
-      </List>
-      <List>
-        <label>Maximum Price</label>
-        <Select
-          name='max'
-          onChange={({ target: { value } }) =>
-            setSelect({
-              ...select,
-              max: value,
-            })
+          <div style={{ padding: "1em", paddingLeft: "2em" }}>
+            <Select
+              onChange={(value) =>
+                setSelect({
+                  ...select,
+                  min: value,
+                })
+              }
+              defaultValue='Car Minimum Price'
+              style={{ width: "100%" }}
+            >
+              <Option value={query.min}>{query.min || "Minimum Prices"}</Option>
+              {prices.map((price: number) => (
+                <Option key={price} value={price}>
+                  {formatPrice(price)}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </SubMenu>
+        <SubMenu
+          key='sub4'
+          title={
+            <span>
+              <DollarOutlined />
+              <span>Maximum Price</span>
+            </span>
           }
         >
-          <option value={query.max}>{query.max || "Maximum Prices"}</option>
-          {prices.map((price: number) => (
-            <option key={price} value={price}>
-              {price}
-            </option>
-          ))}
-        </Select>
-      </List>
-
-      <Button background='teal' onClick={handleSearch}>
+          <div style={{ padding: "1em", paddingLeft: "2em" }}>
+            <Select
+              onChange={(value) =>
+                setSelect({
+                  ...select,
+                  max: value,
+                })
+              }
+              defaultValue='Car Maximum Price'
+              style={{ width: "100%" }}
+            >
+              <Option value={query.max}>{query.max || "Maximum Prices"}</Option>
+              {prices.map((price: number) => (
+                <Option key={price} value={price}>
+                  {formatPrice(price)}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </SubMenu>
+      </Menu>
+      <Button
+        loading={false}
+        type='primary'
+        shape='round'
+        icon={<KeyOutlined />}
+        size='large'
+        style={{ width: "100%", marginTop: "2em" }}
+        onClick={handleSearch}
+      >
         Search For Car
       </Button>
 
@@ -173,8 +219,14 @@ const Sidebar = ({ setSelect, select, makes, models, total, nTotal }) => {
 export default Sidebar;
 
 const Container = styled.div`
-  /* position: sticky;
-top: 0; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  border-radius: 0.3em;
+
+  h2 {
+    padding: 1em 0;
+    padding-top: 0;
+  }
 `;
 const List = styled.div`
   margin-bottom: 1em;
@@ -184,14 +236,14 @@ const List = styled.div`
     padding-bottom: 0.5em;
   }
 `;
-const Select = styled.select`
+const Selects = styled.select`
   width: 100%;
   padding: 10px 5px;
   border-radius: 4px;
   outline: none;
   border: 1px solid #cccccc;
 `;
-const Button = styled.button<{ background: string }>`
+const Buttons = styled.button<{ background: string }>`
   display: block;
   width: 100%;
   border: ${({ background }) => (background ? "1px solid #cccccc" : "none")};

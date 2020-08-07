@@ -33,6 +33,9 @@ const Nav = () => {
         <Link href='/faqs'>
           <a>Faq</a>
         </Link>
+        <Link href='/car/add'>
+          <a>Sell Car</a>
+        </Link>
       </div>
     </NavStyle>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { formatPrice } from "../../utils/formatPrice";
+import { Descriptions, Badge, Col, Row } from "antd";
 
 const hmm = "../../../assets/lexus.jpg";
 
@@ -27,21 +28,45 @@ const Car = ({
       <H1>
         {name} - {model} - {year}
       </H1>
-      <Grid>
-        <Image>
-          <img src={photo_url || hmm} alt='cars poster' />
-        </Image>
-        <Content>
-          <h1 className='make'>Car Make: {name.toUpperCase()}</h1>
-          <h2 className='model'>Car Model: {model}</h2>
-          <p className='year'>Manufacturing Year: {year}</p>
-          <p className='price'>Car Price: ₦ {formatPrice(price)}</p>
-          <p className='kilo'>Car Distance: {formatPrice(distance)} KM</p>
-          <p className='fuel'>Fuel Type: {fuel_type}</p>
-          <p className='location'>Location: {location}</p>
-          <p className='description'>Car Discription: {description}</p>
-        </Content>
-      </Grid>
+      <Row gutter={[16, 16]} align='middle'>
+        <Col span={12} xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Image>
+            <img src={photo_url || hmm} alt='cars poster' />
+          </Image>
+        </Col>
+        <Col span={12} xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Descriptions title='Car Details' bordered>
+            <Descriptions.Item label='Car Make'>
+              {name.toUpperCase()}
+            </Descriptions.Item>
+            <Descriptions.Item label='Car Model'>
+              {model[0].toUpperCase() + model.slice(1)}
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions bordered>
+            <Descriptions.Item label='Manufacturing Year'>
+              {year}
+            </Descriptions.Item>
+            <Descriptions.Item label='Car Price'>
+              ₦ {formatPrice(price)}
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions bordered>
+            <Descriptions.Item label='Car Distance'>
+              {formatPrice(distance)} KM
+            </Descriptions.Item>
+            <Descriptions.Item label='Fuel Type'>{fuel_type}</Descriptions.Item>
+          </Descriptions>
+          <Descriptions bordered>
+            <Descriptions.Item label='Location'>{location}</Descriptions.Item>
+          </Descriptions>
+          <Descriptions bordered>
+            <Descriptions.Item label='Car Discription'>
+              {description}
+            </Descriptions.Item>
+          </Descriptions>
+        </Col>
+      </Row>
     </Container>
   );
 };
@@ -49,7 +74,7 @@ const Car = ({
 export default Car;
 
 const Container = styled.div`
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 `;
 const Grid = styled.div`
   display: grid;
