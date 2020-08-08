@@ -59,8 +59,6 @@ function IndexPage({
 
   const { push, query }: any = useRouter();
 
-  console.log(query);
-
   const allCars = () => {
     let queryCars =
       all.length > 0
@@ -75,6 +73,8 @@ function IndexPage({
 
     return queryCars;
   };
+
+  console.log(allCars());
 
   let a: any = new Set(models.map((m) => m));
 
