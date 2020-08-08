@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT",
-    "heroku-postbuild": "yarn build"
+    "start": "NODE_ENV=production node server.js",
+    "export": "npm run build && next export"
   },
   "keywords": [],
   "author": "",

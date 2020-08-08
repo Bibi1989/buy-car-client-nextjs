@@ -33,11 +33,6 @@
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/faqs.js"
-    ],
-    "/vehicle/[make]/[model]/[id]": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/vehicle/[make]/[model]/[id].js"
     ]
   },
   "ampFirstPages": []
