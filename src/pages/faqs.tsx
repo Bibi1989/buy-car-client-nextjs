@@ -49,7 +49,7 @@ export default function Details({ faqs }) {
 }
 
 export async function getServerSideProps() {
-  const url = "http://localhost:5000/api/v1/fags";
+  const url = "https://buyyourcar-api.herokuapp.com/api/v1/fags";
   const res = await fetch(url);
   const faqs = await res.json();
 
