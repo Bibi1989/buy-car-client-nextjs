@@ -74,8 +74,6 @@ function IndexPage({
     return queryCars;
   };
 
-  console.log(allCars());
-
   let a: any = new Set(models.map((m) => m));
 
   const prev = () => {
@@ -104,15 +102,7 @@ function IndexPage({
 
   return (
     <Row style={{ width: "100%", paddingLeft: "1em" }}>
-      <Col
-        className='gutter-row'
-        xxl={6}
-        xl={6}
-        lg={10}
-        md={10}
-        sm={24}
-        xs={24}
-      >
+      <Col className='gutter-row' xxl={6} xl={6} lg={8} md={8} sm={8} xs={24}>
         <Affix offsetTop={10}>
           <Divider orientation='center'>Filter Cars</Divider>
           <Sidebar
@@ -125,7 +115,7 @@ function IndexPage({
           />
         </Affix>
       </Col>
-      <Col offset={1} xxl={17} xl={17} lg={13} md={13} sm={24} xs={24}>
+      <Col offset={1} xxl={17} xl={17} lg={15} md={15} sm={15} xs={24}>
         <Divider orientation='left'>Cars</Divider>
         <div>
           {allCars().length <= 0 && <Empty />}
@@ -170,14 +160,14 @@ export async function getServerSideProps(ctx) {
   let page = Number(ctx.query.page) || 1;
   let limit = Number(ctx.query.limit) || 4;
 
-  const count_url = `http://localhost:5000/api/v1/count`;
-  const url = `http://localhost:5000/api/v1/cars?page=${page}&limit=${limit}`;
-  const make_url = `http://localhost:5000/api/v1/makes`;
-  const price_url = `http://localhost:5000/api/v1/prices?min=${min}&max=${max}`;
-  const all_url = `http://localhost:5000/api/v1/prices?min=${min}&max=${max}&make=${make}&model=${mod}`;
-  const base_on_make_url = `http://localhost:5000/api/v1/cars/make/${make}`;
-  const model_url = `http://localhost:5000/api/v1/models/${make}`;
-  const make_model_url = `http://localhost:5000/api/v1/cars/model/make?make=${make}&model=${mod}`;
+  const count_url = `https://buyyourcar-api.herokuapp.com/api/v1/count`;
+  const url = `https://buyyourcar-api.herokuapp.com/api/v1/cars?page=${page}&limit=${limit}`;
+  const make_url = `https://buyyourcar-api.herokuapp.com/api/v1/makes`;
+  const price_url = `https://buyyourcar-api.herokuapp.com/api/v1/prices?min=${min}&max=${max}`;
+  const all_url = `https://buyyourcar-api.herokuapp.com/api/v1/prices?min=${min}&max=${max}&make=${make}&model=${mod}`;
+  const base_on_make_url = `https://buyyourcar-api.herokuapp.com/api/v1/cars/make/${make}`;
+  const model_url = `https://buyyourcar-api.herokuapp.com/api/v1/models/${make}`;
+  const make_model_url = `https://buyyourcar-api.herokuapp.com/api/v1/cars/model/make?make=${make}&model=${mod}`;
   const [
     res,
     filter,

@@ -33,7 +33,7 @@ const Sidebar = ({ setSelect, select, makes, models, total, nTotal }) => {
   useEffect(() => {
     const getModels = async () => {
       const res = await fetch(
-        `http://localhost:5000/api/v1/models/${select.make}`
+        `https://buyyourcar-api.herokuapp.com/api/v1/models/${select.make}`
       );
       let mods = await res.json();
       // let k: any = new Set(mods.data ? mods.data.map((m) => m) : []);

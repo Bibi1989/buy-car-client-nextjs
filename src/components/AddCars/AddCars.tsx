@@ -4,7 +4,7 @@ import axios from "axios";
 import { states } from "../../utils/states";
 
 const AddCars = () => {
-  const url = "http://localhost:5000/api/v1/cars";
+  const url = "https://buyyourcar-api.herokuapp.com/api/v1/cars";
   const [errors, setErrors] = useState([]);
   // const [file, setFile] = useState(null);
   const [values, setValues] = useState({

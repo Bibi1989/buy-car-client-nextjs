@@ -11,8 +11,8 @@ export default function CarDetails({ faq, car }) {
 
 export const getServerSideProps = async (ctx) => {
   const id = ctx.params.id;
-  const url = "http://localhost:5000/api/v1/fags";
-  const single_url = `http://localhost:5000/api/v1/cars/${id}`;
+  const url = "https://buyyourcar-api.herokuapp.com/api/v1/fags";
+  const single_url = `https://buyyourcar-api.herokuapp.com/api/v1/cars/${id}`;
   // const res = await fetch(`${url}/${ctx.params.id}`);
   // const response = await fetch(single_url);
 
