@@ -82,7 +82,7 @@ const AddCars = () => {
         )}
       </div>
       <Form onSubmit={addFaqs}>
-        <H1>Add Faqs</H1>
+        <H1>Add Cars</H1>
         <Divgroup>
           <Input
             type='text'
@@ -181,7 +181,7 @@ const AddCars = () => {
             }
           ></Textarea>
         </Divgroup>
-        <Button>Add Faqs</Button>
+        <Button>Add Car</Button>
       </Form>
     </Container>
   );

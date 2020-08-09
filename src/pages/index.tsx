@@ -103,17 +103,17 @@ function IndexPage({
   return (
     <Row style={{ width: "100%", paddingLeft: "1em" }}>
       <Col className='gutter-row' xxl={6} xl={6} lg={8} md={8} sm={8} xs={24}>
-        <Affix offsetTop={10}>
-          <Divider orientation='center'>Filter Cars</Divider>
-          <Sidebar
-            setSelect={setSelect}
-            select={select}
-            makes={makes}
-            models={models}
-            nTotal={nTotal}
-            total={total}
-          />
-        </Affix>
+        {/* <Affix offsetTop={10}> */}
+        <Divider orientation='center'>Filter Cars</Divider>
+        <Sidebar
+          setSelect={setSelect}
+          select={select}
+          makes={makes}
+          models={models}
+          nTotal={nTotal}
+          total={total}
+        />
+        {/* </Affix> */}
       </Col>
       <Col offset={1} xxl={17} xl={17} lg={15} md={15} sm={15} xs={24}>
         <Divider orientation='left'>Cars</Divider>
