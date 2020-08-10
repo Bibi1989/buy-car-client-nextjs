@@ -52,7 +52,7 @@ const AddCars = () => {
     form.append("color", values.color);
     form.append("fuel_type", values.fuel_type.toLowerCase());
     form.append("distance", values.distance);
-    form.append("file", values.file);
+    Object.values(values.file).map((file: any) => form.append("file", file));
     form.append("year", values.year);
     form.append("location", values.location.toLowerCase());
     await addToCars(form);
@@ -154,10 +154,11 @@ const AddCars = () => {
             type='file'
             name='file'
             placeholder='Upload car image'
-            // value={values.file}
             onChange={({ target: { files } }) =>
-              setValues({ ...values, file: files[0] })
+              setValues({ ...values, file: files })
             }
+            accept='image/*'
+            multiple
           />
         </Divgroup>
         <Divgroup>
