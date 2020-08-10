@@ -39,11 +39,12 @@ const AllCars = ({
   const handleNav = (id) => {
     push(`/vehicle/${name}/${model}/${id}`);
   };
+  const image = JSON.parse(photo_url)[0];
   return (
     <Row gutter={[16, 16]} style={{ width: "100%" }} align='middle'>
       <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
         <Image onClick={() => handleNav(_id)}>
-          <img src={photo_url || bmw} alt='cars poster' />
+          <img src={image || bmw} alt='cars poster' />
         </Image>
       </Col>
       <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>

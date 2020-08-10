@@ -136,6 +136,7 @@ const AddCars = () => {
             placeholder='Car Color'
             value={values.color}
             onChange={handleInput}
+            id='color'
           />
         </Divgroup>
 
@@ -202,6 +203,12 @@ const Form = styled.form`
   padding: 1em;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border-radius: 0.3em;
+
+  #color {
+    width: 150px;
+    height: 40px;
+    margin-left: 15px;
+  }
 `;
 const Divgroup = styled.div`
   width: 100%;

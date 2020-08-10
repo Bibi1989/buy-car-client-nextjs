@@ -29,10 +29,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/faqs": [
+    "/car/add": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/faqs.js"
+      "static/chunks/pages/car/add.js"
     ],
     "/vehicle/[make]/[model]/[id]": [
       "static/chunks/main.js",
